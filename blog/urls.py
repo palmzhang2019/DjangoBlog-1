@@ -14,7 +14,7 @@ urlpatterns = [
         views.IndexView.as_view(),
         name='index_page'),
     path(
-        r'article/<int:year>/<int:month>/<int:day>/<int:article_id>.html',
+        r'article/<slug:category_name>/<int:article_id>.html',
         views.ArticleDetailView.as_view(),
         name='detailbyid'),
     path(

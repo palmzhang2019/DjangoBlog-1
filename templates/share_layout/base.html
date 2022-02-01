@@ -1,89 +1,66 @@
 {% load static %}
 {% load cache %}
 {% load compress %}
-<!DOCTYPE html>
-<!--[if IE 7]>
-<html class="ie ie7" lang="zh-CN"
-      prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
-<![endif]-->
-<!--[if IE 8]>
-<html class="ie ie8" lang="zh-CN"
-      prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
-<![endif]-->
-<!--[if !(IE 7) & !(IE 8)]><!-->
-<html lang="zh-CN" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
-<!--<![endif]-->
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width"/>
-    {% block header %}
-    {% endblock %}
-    <link rel="profile" href="http://gmpg.org/xfn/11"/>
-
-    <!--[if lt IE 9]>
-    <script src="{% static 'blog/js/html5.js' %}" type="text/javascript"></script>
-    <![endif]-->
-
-    <link rel="alternate" type="application/rss+xml" title="{{ SITE_NAME }} &raquo; Feed"
-          href="/feed"/>
-    <link rel='stylesheet preload' as="font" id='twentytwelve-fonts-css'
-          href='{% static 'blog/fonts/fonts.css' %}'
-          type='text/css' media='all'/>
-    {% compress css %}
-
-        <link rel='stylesheet' id='twentytwelve-style-css' href='{% static 'blog/css/style.css' %}' type='text/css'
-              media='all'/>
-        <link href="{% static 'blog/css/oauth_style.css' %}" rel="stylesheet">
-        {% comment %}<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>{% endcomment %}
-        <!--[if lt IE 9]>
-        <link rel='stylesheet' id='twentytwelve-ie-css'  href='{% static 'blog/css/ie.css' %}' type='text/css' media='all' />
-        <![endif]-->
-        <link rel="stylesheet" href="{% static 'pygments/default.css' %}"/>
-        <link rel="stylesheet" href="{% static 'blog/css/nprogress.css' %}">
-        {% block compress_css %}
-        {% endblock %}
-    {% endcompress %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  {% block header %}
+  {% endblock %}
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="icon" type="image/png" href="{% static '/blog/i/favicon.png' %}">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="{% static '/blog/i/app-icon72x72@2x.png' %}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="{% static '/blog/i/app-icon72x72@2x.png' %}">
+  <meta name="msapplication-TileImage" content="{% static '/blog/i/app-icon72x72@2x.png' %}">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+  <link rel="stylesheet" href="{% static 'blog/css/amazeui.min.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/app.css' %}">
 </head>
 
-<body class="home blog custom-font-enabled">
-<div id="page" class="hfeed site">
-    <header id="masthead" class="site-header" role="banner">
-        <hgroup>
-            <h1 class="site-title"><a href="/" title="{{ SITE_NAME }}" rel="home">{{ SITE_NAME }}</a>
-            </h1>
-            <h2 class="site-description">{{ SITE_DESCRIPTION }}</h2>
-        </hgroup>
+<body id="blog">
 
-        {% cache 36000 nav %}
-            {% include 'share_layout/nav.html' %}
-        {% endcache %}
+<header class="am-g am-g-fixed blog-fixed blog-text-center blog-header">
+    <div class="am-u-sm-8 am-u-sm-centered">
+<!--        <img width="200" src="http://s.amazeui.org/media/i/brand/amazeui-b.png" alt="Amaze UI Logo"/>-->
+        <h2 class="am-hide-sm-only"><a href="/">张小呆的树莓派博客</a></h2>
+    </div>
+</header>
+<hr>
+<!-- nav start -->
+{% cache 36000 nav %}
+    {% include 'share_layout/nav.html' %}
+{% endcache %}
+<hr>
+<!-- nav end -->
 
-    </header><!-- #masthead -->
-    <div id="main" class="wrapper">
+<!-- content srart -->
+<div class="am-g am-g-fixed blog-fixed">
 
         {% block content %}
         {% endblock %}
 
-
         {% block sidebar %}
         {% endblock %}
-
-
-    </div><!-- #main .wrapper -->
+</div>
+<!-- content end -->
     {% include 'share_layout/footer.html' %}
-</div><!-- #page -->
 
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="{% static 'blog/js/jquery.min.js' %}"></script>
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="{% static 'blog/js/amazeui.ie8polyfill.min.js' %}"></script>
+<![endif]-->
+<script src="{% static 'blog/js/amazeui.min.js' %}"></script>
 </body>
-<footer>
-    {% compress js %}
-        <script type="text/javascript" src="{% static 'blog/js/jquery-3.6.0.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'blog/js/nprogress.js' %}"></script>
-        <script src="{% static 'blog/js/blog.js' %}" type="application/javascript"></script>
-        <script src="{% static 'blog/js/navigation.js' %}" type="application/javascript"></script>
-        {% block compress_js %}
-        {% endblock %}
-    {% endcompress %}
-    {% block footer %}
-    {% endblock %}
-</footer>
 </html>

@@ -1,6 +1,7 @@
 import logging
+import re
 from abc import abstractmethod
-
+from pyquery import PyQuery as pq
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -71,7 +72,8 @@ class Article(BaseModel):
         ('a', '文章'),
         ('p', '页面'),
     )
-    title = models.CharField('标题', max_length=200, unique=True)
+    title = models.CharField('标题', max_length=100, unique=True)
+    summary = models.TextField('文章摘要', max_length=230, blank=True, default='文章摘要等同于网页description内容，请务必填写...')
     body = MDTextField('正文')
     pub_time = models.DateTimeField(
         '发布时间', blank=False, null=False, default=now)
@@ -164,6 +166,17 @@ class Article(BaseModel):
     def prev_article(self):
         # 前一篇
         return Article.objects.filter(id__lt=self.id, status='p').first()
+
+    def pub_date(self):
+        return str(self.pub_time).strip().split(' ')[0]
+
+    # 获取后台文本编辑器图文内容中图片 url 地址
+    def get_content_img_url(self):
+        temp = Article.objects.filter(pk=str(self.id)).values('body')  # values 获取 Article 数据表中的 content 字段内容
+        html = pq(temp[0]['body'])  # pq 方法获取编辑器 html 内容
+        img_path = re.search("(?:!\[(.*?)\]\((.*?)\))", str(html)).group()
+        img = re.search("\((.*?\.jpg|\.png)\)", img_path).groups()[0]
+        return img  # 返回第一张图片路径
 
 
 class Category(BaseModel):
